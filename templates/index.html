@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kung Fu Panda Bot Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { text-align: center; color: white; margin-bottom: 30px; }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .card { background: white; border-radius: 15px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .status-item { text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px; }
+        .status-item h3 { color: #667eea; margin-bottom: 10px; }
+        .status-item .value { font-size: 1.5em; font-weight: bold; color: #333; }
+        .btn { background: #667eea; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
+        .btn:hover { background: #5568d3; transform: translateY(-2px); }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .history { margin-top: 20px; }
+        .history-item { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .history-item:last-child { border-bottom: none; }
+        .status-badge { padding: 5px 10px; border-radius: 5px; font-size: 0.9em; }
+        .status-success { background: #d4edda; color: #155724; }
+        .status-failed { background: #f8d7da; color: #721c24; }
+        .loading { text-align: center; padding: 20px; color: #667eea; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐼 Kung Fu Panda Bot</h1>
+            <p>Automated Instagram Posting Dashboard</p>
+        </div>
+
+        <div class="card">
+            <div class="status-grid">
+                <div class="status-item">
+                    <h3>Next Post</h3>
+                    <div class="value" id="nextPost">Loading...</div>
+                </div>
+                <div class="status-item">
+                    <h3>Last Post</h3>
+                    <div class="value" id="lastPost">Loading...</div>
+                </div>
+                <div class="status-item">
+                    <h3>Service Status</h3>
+                    <div class="value" id="serviceStatus">🟢 Running</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h2 style="margin-bottom: 20px;">Manual Trigger</h2>
+            <button class="btn" id="triggerBtn" onclick="triggerPost()">Post Now 🚀</button>
+            <div id="triggerResult" style="margin-top: 15px;"></div>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 20px;">Recent Posts</h2>
+            <div class="history" id="history">
+                <div class="loading">Loading history...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleString();
+        }
+
+        function timeUntil(isoString) {
+            const target = new Date(isoString);
+            const now = new Date();
+            const diff = target - now;
+            
+            if (diff < 0) return 'Scheduled';
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            if (hours > 24) {
+                const days = Math.floor(hours / 24);
+                return `In ${days} day${days > 1 ? 's' : ''}`;
+            }
+            return `In ${hours}h ${minutes}m`;
+        }
+
+        async function loadStatus() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                
+                document.getElementById('nextPost').textContent = data.next_post ? timeUntil(data.next_post) : 'Not scheduled';
+                document.getElementById('lastPost').textContent = data.last_post ? formatDate(data.last_post.timestamp) : 'No posts yet';
+                document.getElementById('serviceStatus').textContent = '🟢 ' + data.service_status;
+            } catch (e) {
+                document.getElementById('serviceStatus').textContent = '🔴 Error';
+            }
+        }
+
+        async function loadHistory() {
+            try {
+                const res = await fetch('/api/history');
+                const posts = await res.json();
+                
+                const historyDiv = document.getElementById('history');
+                if (posts.length === 0) {
+                    historyDiv.innerHTML = '<div class="loading">No posts yet</div>';
+                    return;
+                }
+                
+                historyDiv.innerHTML = posts.map(p => `
+                    <div class="history-item">
+                        <div>
+                            <strong>${formatDate(p.timestamp)}</strong><br>
+                            <small>${p.caption.substring(0, 100)}...</small>
+                        </div>
+                        <span class="status-badge status-${p.status}">${p.status}</span>
+                    </div>
+                `).join('');
+            } catch (e) {
+                document.getElementById('history').innerHTML = '<div class="loading">Error loading history</div>';
+            }
+        }
+
+        async function triggerPost() {
+            const btn = document.getElementById('triggerBtn');
+            const result = document.getElementById('triggerResult');
+            
+            btn.disabled = true;
+            btn.textContent = 'Posting...';
+            result.innerHTML = '';
+            
+            try {
+                const res = await fetch('/api/trigger', { method: 'POST' });
+                const data = await res.json();
+                
+                if (data.success) {
+                    result.innerHTML = '<div style="color: green; font-weight: bold;">✓ Posted successfully!</div>';
+                    setTimeout(() => {
+                        loadStatus();
+                        loadHistory();
+                    }, 1000);
+                } else {
+                    result.innerHTML = `<div style="color: red;">✗ Error: ${data.error}</div>`;
+                }
+            } catch (e) {
+                result.innerHTML = '<div style="color: red;">✗ Network error</div>';
+            }
+            
+            btn.disabled = false;
+            btn.textContent = 'Post Now 🚀';
+        }
+
+        // Load data on page load
+        loadStatus();
+        loadHistory();
+        
+        // Refresh every 30 seconds
+        setInterval(() => {
+            loadStatus();
+            loadHistory();
+        }, 30000);
+    </script>
+</body>
+</html>
