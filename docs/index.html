@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Auto-Bot - AI-Powered Content Automation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+        
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        
+        .hero-buttons {
+            margin-top: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            margin: 10px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            margin: 40px 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .content h2 {
+            color: #667eea;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .content h3 {
+            color: #764ba2;
+            font-size: 1.6em;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .content p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .story {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border-left: 5px solid #667eea;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .feature h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .stat {
+            flex: 1;
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        code {
+            background: #f4f4f4;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+        }
+        
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        pre code {
+            background: none;
+            color: #f8f8f2;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: white;
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 2em; }
+            .content { padding: 30px 20px; }
+            .stats { flex-direction: column; }
+            .stat { margin: 20px 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Instagram Auto-Bot</h1>
+            <p>Stop posting manually. Let AI do it for you.</p>
+            <div class="hero-buttons">
+                <a href="https://github.com/harisXcyber/instagram-auto-bot" class="btn">View on GitHub</a>
+                <a href="#guide" class="btn btn-secondary">Read the Story</a>
+            </div>
+        </header>
+
+        <div class="content">
+            <h2>Why I Built This</h2>
+            
+            <div class="story">
+                <p><strong>Real talk:</strong> I was tired of the Instagram grind.</p>
+                <p>Every. Single. Day. Finding images, writing captions, adding hashtags, scheduling posts... It was eating up hours of my life.</p>
+                <p>Then I thought: <em>"What if I could automate ALL of this?"</em></p>
+                <p>So I did. And now my Instagram runs itself while I sleep. 😴</p>
+            </div>
+
+            <h3>The Problem</h3>
+            <p>Content creation is exhausting. You need to:</p>
+            <ul style="margin-left: 30px; margin-bottom: 20px;">
+                <li>Find or create images</li>
+                <li>Write engaging captions</li>
+                <li>Research relevant hashtags</li>
+                <li>Post at optimal times</li>
+                <li>Do this EVERY. SINGLE. DAY.</li>
+            </ul>
+            <p>Miss a day? Your engagement drops. Your followers forget you exist.</p>
+
+            <h3>The Solution</h3>
+            <p>I built a bot that does everything automatically:</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🎨</div>
+                    <h4>AI Captions</h4>
+                    <p>GPT-4 Vision analyzes your images and writes contextual captions</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📅</div>
+                    <h4>Smart Scheduling</h4>
+                    <p>Set it once, forget it forever. Daily posts on autopilot</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌐</div>
+                    <h4>Web Dashboard</h4>
+                    <p>Monitor everything from a beautiful, password-protected interface</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🚀</div>
+                    <h4>One-Click Deploy</h4>
+                    <p>Deploy to Fly.io in minutes. Free hosting included</p>
+                </div>
+            </div>
+
+            <h3>The Results</h3>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Hours Spent Daily</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Automated</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Free Time Gained</div>
+                </div>
+            </div>
+
+            <h2 id="guide">How It Works</h2>
+            
+            <h3>Step 1: Setup (5 minutes)</h3>
+            <p>Clone the repo and install dependencies:</p>
+            <pre><code>git clone https://github.com/harisXcyber/instagram-auto-bot.git
+cd instagram-auto-bot
+pip install -r requirements.txt</code></pre>
+
+            <h3>Step 2: Add Your Content</h3>
+            <p>Drop your images into the <code>images/</code> folder. That's it.</p>
+
+            <h3>Step 3: Configure</h3>
+            <p>Create a <code>.env</code> file with your credentials:</p>
+            <pre><code>INSTAGRAM_USERNAME=your_username
+INSTAGRAM_PASSWORD=your_password
+OPENAI_API_KEY=your_openai_key
+DASHBOARD_PASSWORD=your_dashboard_password</code></pre>
+
+            <h3>Step 4: Deploy</h3>
+            <p>Deploy to Fly.io (free hosting):</p>
+            <pre><code>flyctl launch
+flyctl secrets set INSTAGRAM_USERNAME=your_username
+flyctl secrets set INSTAGRAM_PASSWORD=your_password
+flyctl secrets set OPENAI_API_KEY=your_key
+flyctl secrets set DASHBOARD_PASSWORD=your_password
+flyctl deploy</code></pre>
+
+            <h3>Step 5: Relax</h3>
+            <p>Your bot is now live. It'll post daily at your scheduled time. You can monitor everything from the web dashboard.</p>
+
+            <h2>The Power of Automation</h2>
+            
+            <p>Here's what I learned building this:</p>
+            
+            <div class="story">
+                <p><strong>Automation isn't lazy. It's smart.</strong></p>
+                <p>People think automation means you're cutting corners. Wrong. It means you're optimizing your time for what actually matters.</p>
+                <p>I spent 2 days building this bot. Now it saves me 30 minutes every single day. That's <span class="highlight">182 hours saved per year</span>.</p>
+                <p>What would you do with an extra 182 hours?</p>
+            </div>
+
+            <h3>What You Can Automate</h3>
+            <ul style="margin-left: 30px; margin-bottom: 20px;">
+                <li><strong>Content posting</strong> - Instagram, Twitter, LinkedIn</li>
+                <li><strong>Image generation</strong> - AI creates images based on your niche</li>
+                <li><strong>Caption writing</strong> - Context-aware, engaging captions</li>
+                <li><strong>Hashtag research</strong> - AI finds trending, relevant tags</li>
+                <li><strong>Scheduling</strong> - Post at optimal times automatically</li>
+                <li><strong>Analytics</strong> - Track what works, what doesn't</li>
+            </ul>
+
+            <h3>Real-World Use Cases</h3>
+            <p><strong>🎨 Artists & Creators:</strong> Showcase your portfolio daily without manual posting</p>
+            <p><strong>📚 Educators:</strong> Share daily tips, quotes, or lessons automatically</p>
+            <p><strong>💼 Businesses:</strong> Maintain consistent social media presence</p>
+            <p><strong>🎯 Marketers:</strong> Run multiple accounts with minimal effort</p>
+            <p><strong>🧘 Lifestyle Brands:</strong> Share motivational content on autopilot</p>
+
+            <h2>Tech Stack</h2>
+            <p>Built with modern, reliable technologies:</p>
+            <ul style="margin-left: 30px; margin-bottom: 20px;">
+                <li><strong>Backend:</strong> Flask (Python web framework)</li>
+                <li><strong>Scheduling:</strong> APScheduler (cron-like job scheduling)</li>
+                <li><strong>Instagram API:</strong> instagrapi (unofficial but powerful)</li>
+                <li><strong>AI:</strong> OpenAI GPT-4 Vision (image analysis + caption generation)</li>
+                <li><strong>Database:</strong> SQLite (lightweight, no setup needed)</li>
+                <li><strong>Deployment:</strong> Docker + Fly.io (free hosting)</li>
+            </ul>
+
+            <h2>Features</h2>
+            <p><strong>✅ AI-Generated Captions:</strong> GPT-4 Vision analyzes your images and writes contextual, engaging captions</p>
+            <p><strong>✅ Flexible Scheduling:</strong> Daily recurring posts + one-time scheduled posts</p>
+            <p><strong>✅ Web Dashboard:</strong> Beautiful interface to monitor and control everything</p>
+            <p><strong>✅ Password Protected:</strong> Secure access to your dashboard</p>
+            <p><strong>✅ Post History:</strong> Track all your posts and their status</p>
+            <p><strong>✅ Manual Trigger:</strong> Post immediately with one click</p>
+            <p><strong>✅ Session Persistence:</strong> Stays logged in to Instagram</p>
+            <p><strong>✅ Free Hosting:</strong> Deploy to Fly.io at no cost</p>
+
+            <h2>Why Open Source?</h2>
+            <p>Because automation should be accessible to everyone.</p>
+            <p>I'm tired of seeing $99/month SaaS tools that do the same thing this bot does for free. So I'm open-sourcing it.</p>
+            <p>Use it. Modify it. Build on it. Make it yours.</p>
+
+            <div class="story">
+                <p><strong>My only ask:</strong> If this saves you time, star the repo ⭐ and share it with someone who needs it.</p>
+            </div>
+
+            <h2>Get Started</h2>
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="https://github.com/harisXcyber/instagram-auto-bot" class="btn">View on GitHub</a>
+                <a href="https://github.com/harisXcyber/instagram-auto-bot/fork" class="btn btn-secondary">Fork & Deploy</a>
+            </div>
+
+            <h2>Questions?</h2>
+            <p>Check the <a href="https://github.com/harisXcyber/instagram-auto-bot#readme" style="color: #667eea;">README</a> or open an issue on GitHub.</p>
+            <p>Want to contribute? PRs are welcome!</p>
+        </div>
+
+        <footer>
+            <p>Built with ☕ and automation by <a href="https://github.com/harisXcyber">@harisXcyber</a></p>
+            <p style="margin-top: 10px; opacity: 0.8;">Stop working harder. Start working smarter.</p>
+        </footer>
+    </div>
+</body>
+</html>
