@@ -1,4 +1,4 @@
-# PrecisionBot - AI-Powered Instagram Automation
+# PrecisionFlow - AI-Powered Instagram Automation
 
 <div align="center">
   <img src="docs/logo.png" alt="Precision Tech Insights" width="200"/>
@@ -14,9 +14,9 @@
 
 ---
 
-## 🎯 What is PrecisionBot?
+## 🎯 What is PrecisionFlow?
 
-PrecisionBot is an open-source Instagram automation platform built by **Precision Tech Insights**. It uses GPT-4 Vision AI to analyze images and generate contextually relevant captions, then automatically posts to Instagram on your schedule.
+PrecisionFlow is an open-source Instagram automation platform built by **Precision Tech Insights**. It uses GPT-4 Vision AI to analyze images and generate contextually relevant captions, then automatically posts to Instagram on your schedule.
 
 **Save 182 hours annually. Post smarter, not harder.**
 
@@ -111,7 +111,7 @@ flyctl deploy
 - Self-hosted deployment
 - Community support
 
-### PrecisionBot Pro (Coming Soon - $29/mo)
+### PrecisionFlow Pro (Coming Soon - $29/mo)
 - Multi-account management
 - Advanced AI agents
 - Engagement analytics
@@ -171,7 +171,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ## 🌟 Star Us!
 
-If PrecisionBot saves you time, please star the repo and share it with others!
+If PrecisionFlow saves you time, please star the repo and share it with others!
 
 ---
 

@@ -1,8 +1,8 @@
-# LinkedIn Post for PrecisionBot Launch
+# LinkedIn Post for PrecisionFlow Launch
 
 ---
 
-**We just open-sourced PrecisionBot — and it's changing how businesses approach Instagram automation. 🚀**
+**We just open-sourced PrecisionFlow — and it's changing how businesses approach Instagram automation. 🚀**
 
 At Precision Tech Insights, we believe in one thing: **From Code to Intelligence — We Deliver Precision.**
 
@@ -10,7 +10,7 @@ Here's the problem we solved:
 
 Businesses waste 30+ minutes EVERY DAY on Instagram. Finding images, writing captions, researching hashtags, scheduling posts... It's exhausting and unsustainable.
 
-So we built PrecisionBot — an AI-powered Instagram automation agent that does it all.
+So we built PrecisionFlow — an AI-powered Instagram automation agent that does it all.
 
 **What makes it different?**
 
@@ -31,7 +31,7 @@ So we built PrecisionBot — an AI-powered Instagram automation agent that does 
 
 This isn't just a bot. It's our first step toward **fully autonomous AI agents** for social media.
 
-We're building intelligent systems that don't just automate — they optimize, learn, and adapt. PrecisionBot is the foundation for multi-platform agents, predictive analytics, and autonomous content strategy.
+We're building intelligent systems that don't just automate — they optimize, learn, and adapt. PrecisionFlow is the foundation for multi-platform agents, predictive analytics, and autonomous content strategy.
 
 **Why open source?**
 
@@ -48,7 +48,7 @@ Python • Flask • OpenAI GPT-4 Vision • APScheduler • Docker • instagra
 
 **What's next?**
 
-We're launching PrecisionBot Pro ($29/mo) with multi-account management, advanced AI agents, and engagement analytics. Enterprise solutions coming soon.
+We're launching PrecisionFlow Pro ($29/mo) with multi-account management, advanced AI agents, and engagement analytics. Enterprise solutions coming soon.
 
 But the open-source version? Always free. Always powerful.
 
