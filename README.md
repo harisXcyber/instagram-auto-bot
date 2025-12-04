@@ -1,67 +1,92 @@
-# Kung Fu Panda Instagram Bot
+# Instagram Auto-Posting Bot
 
-Automated Instagram posting with AI-generated captions and web dashboard.
+Automated Instagram bot with AI-generated captions, scheduling, and web dashboard.
 
 ## Features
-- 🤖 Automated daily posts at 5 AM
-- 🎨 AI-generated captions using OpenAI Vision API
-- 📊 Web dashboard to monitor and trigger posts
-- 🖼️ 769 Kung Fu Panda images included
-- 📝 Post history tracking
 
-## Deploy to Fly.io (Free)
+- 🤖 Automated daily posts with AI-generated captions
+- 🎨 OpenAI Vision API for context-aware content
+- 📅 Flexible scheduling system (recurring & one-time posts)
+- 🌐 Web dashboard for monitoring and control
+- 🔒 Password-protected interface
+- 📊 Post history tracking
+- 🚀 One-click manual posting
+
+## Tech Stack
+
+- **Backend:** Flask + APScheduler
+- **Instagram:** instagrapi
+- **AI:** OpenAI GPT-4 Vision
+- **Database:** SQLite
+- **Deployment:** Fly.io (Docker)
+
+## Setup
+
+### 1. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Configure Environment
+
+Copy `.env.example` to `.env` and fill in your credentials:
+
+```bash
+cp .env.example .env
+```
+
+### 3. Add Images
+
+Place your images in the `images/` directory.
+
+### 4. Run Locally
+
+```bash
+python app.py
+```
+
+Visit `http://localhost:8080`
+
+## Deployment (Fly.io)
 
 ### 1. Install Fly CLI
+
 ```bash
 curl -L https://fly.io/install.sh | sh
 ```
 
-### 2. Login to Fly.io
+### 2. Login
+
 ```bash
 flyctl auth login
 ```
 
-### 3. Create app and deploy
-```bash
-cd /home/haris/kungfupanda-web
-flyctl launch --no-deploy
-```
+### 3. Deploy
 
-### 4. Set secrets
 ```bash
-flyctl secrets set INSTAGRAM_USERNAME=kungfu.painda
-flyctl secrets set INSTAGRAM_PASSWORD="htybrertf:;:45635879c"
-flyctl secrets set OPENAI_API_KEY=your_openai_key
-```
-
-### 5. Create volume for persistent storage
-```bash
-flyctl volumes create kungfupanda_data --size 1
-```
-
-### 6. Deploy
-```bash
+flyctl launch
+flyctl secrets set INSTAGRAM_USERNAME=your_username
+flyctl secrets set INSTAGRAM_PASSWORD=your_password
+flyctl secrets set OPENAI_API_KEY=your_key
+flyctl secrets set DASHBOARD_PASSWORD=your_dashboard_password
 flyctl deploy
 ```
 
-### 7. Open dashboard
-```bash
-flyctl open
-```
-
-## Local Testing
-```bash
-python app.py
-# Visit http://localhost:8080
-```
-
 ## Dashboard Features
-- **Next Post**: Shows when next scheduled post will happen
-- **Last Post**: Timestamp of most recent post
-- **Post Now**: Manual trigger button
-- **History**: Last 10 posts with status
 
-## Environment Variables
-- `INSTAGRAM_USERNAME`: Instagram account username
-- `INSTAGRAM_PASSWORD`: Instagram account password
-- `OPENAI_API_KEY`: OpenAI API key (optional, uses default captions if not set)
+- **Next Post:** Shows countdown to next scheduled post
+- **Manual Trigger:** Post immediately with one click
+- **Schedules Tab:** View/add/remove scheduled posts
+- **History Tab:** See recent posts and their status
+
+## Security
+
+- Password-protected dashboard
+- Session-based authentication
+- Instagram session persistence
+- Environment variables for sensitive data
+
+## License
+
+MIT

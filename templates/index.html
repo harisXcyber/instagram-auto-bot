@@ -5,6 +5,42 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        
+        /* Password Overlay */
+        #passwordOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        #passwordOverlay.hidden { display: none; }
+        .password-box {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+        }
+        .password-box h2 { color: #fff; margin-bottom: 20px; font-size: 1.5em; }
+        .password-box input {
+            width: 300px;
+            padding: 15px;
+            border: 2px solid #333;
+            background: #2a2a2a;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+        .password-box input:focus { outline: none; border-color: #667eea; }
+        .password-error { color: #ff4444; margin-top: 10px; font-size: 14px; }
+        
         .container { max-width: 1200px; margin: 0 auto; }
         .header { text-align: center; color: white; margin-bottom: 30px; }
         .header h1 { font-size: 2.5em; margin-bottom: 10px; }
@@ -13,19 +49,40 @@
         .status-item { text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px; }
         .status-item h3 { color: #667eea; margin-bottom: 10px; }
         .status-item .value { font-size: 1.5em; font-weight: bold; color: #333; }
-        .btn { background: #667eea; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1em; cursor: pointer; transition: 0.3s; }
+        .btn { background: #667eea; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.1em; cursor: pointer; transition: 0.3s; margin: 5px; }
         .btn:hover { background: #5568d3; transform: translateY(-2px); }
         .btn:disabled { background: #ccc; cursor: not-allowed; }
-        .history { margin-top: 20px; }
+        .btn-danger { background: #dc3545; }
+        .btn-danger:hover { background: #c82333; }
+        .btn-small { padding: 8px 15px; font-size: 0.9em; }
+        .schedule-item { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .schedule-item:last-child { border-bottom: none; }
         .history-item { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .history-item:last-child { border-bottom: none; }
         .status-badge { padding: 5px 10px; border-radius: 5px; font-size: 0.9em; }
         .status-success { background: #d4edda; color: #155724; }
         .status-failed { background: #f8d7da; color: #721c24; }
+        .status-recurring { background: #d1ecf1; color: #0c5460; }
+        .status-onetime { background: #fff3cd; color: #856404; }
         .loading { text-align: center; padding: 20px; color: #667eea; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab { padding: 10px 20px; background: #f8f9fa; border-radius: 8px; cursor: pointer; transition: 0.3s; }
+        .tab.active { background: #667eea; color: white; }
     </style>
 </head>
 <body>
+    <!-- Password Overlay -->
+    <div id="passwordOverlay">
+        <div class="password-box">
+            <h2>🐼 Enter Password</h2>
+            <input type="password" id="passwordInput" placeholder="Password" onkeypress="if(event.key==='Enter')checkPassword()">
+            <div class="password-error" id="passwordError"></div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>🐼 Kung Fu Panda Bot</h1>
@@ -56,14 +113,151 @@
         </div>
 
         <div class="card">
-            <h2 style="margin-bottom: 20px;">Recent Posts</h2>
-            <div class="history" id="history">
-                <div class="loading">Loading history...</div>
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('schedules')">📅 Schedules</div>
+                <div class="tab" onclick="switchTab('history')">📝 History</div>
+            </div>
+
+            <div id="schedulesTab">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Scheduled Posts</h2>
+                    <button class="btn btn-small" onclick="showAddSchedule()">+ Add Schedule</button>
+                </div>
+
+                <div id="addScheduleForm" style="display: none; background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 15px;">Add New Schedule</h3>
+                    <div class="form-group">
+                        <label>Date & Time</label>
+                        <input type="datetime-local" id="scheduleTime">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="isRecurring"> Repeat daily at this time
+                        </label>
+                    </div>
+                    <button class="btn btn-small" onclick="addSchedule()">Add</button>
+                    <button class="btn btn-small btn-danger" onclick="hideAddSchedule()">Cancel</button>
+                </div>
+
+                <div id="schedulesList">
+                    <div class="loading">Loading schedules...</div>
+                </div>
+            </div>
+
+            <div id="historyTab" style="display: none;">
+                <h2 style="margin-bottom: 20px;">Recent Posts</h2>
+                <div id="history">
+                    <div class="loading">Loading history...</div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        let currentTab = 'schedules';
+        let authenticated = false;
+
+        async function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const error = document.getElementById('passwordError');
+            
+            try {
+                const res = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({password})
+                });
+                
+                if (res.ok) {
+                    authenticated = true;
+                    document.getElementById('passwordOverlay').classList.add('hidden');
+                    loadStatus();
+                    loadSchedules();
+                } else {
+                    error.textContent = 'Wrong password. Try again.';
+                    document.getElementById('passwordInput').value = '';
+                }
+            } catch (e) {
+                error.textContent = 'Error. Try again.';
+            }
+        }
+
+        // Auto-focus password input
+        document.getElementById('passwordInput').focus();
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.getElementById('schedulesTab').style.display = tab === 'schedules' ? 'block' : 'none';
+            document.getElementById('historyTab').style.display = tab === 'history' ? 'block' : 'none';
+            
+            if (tab === 'schedules') loadSchedules();
+            if (tab === 'history') loadHistory();
+        }
+
+        function showAddSchedule() {
+            document.getElementById('addScheduleForm').style.display = 'block';
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('scheduleTime').value = now.toISOString().slice(0, 16);
+        }
+
+        function hideAddSchedule() {
+            document.getElementById('addScheduleForm').style.display = 'none';
+        }
+
+        async function addSchedule() {
+            const time = document.getElementById('scheduleTime').value;
+            const recurring = document.getElementById('isRecurring').checked;
+            
+            if (!time) {
+                alert('Please select a date and time');
+                return;
+            }
+            
+            try {
+                const res = await fetch('/api/schedule', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        scheduled_time: new Date(time).toISOString(),
+                        is_recurring: recurring
+                    })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    hideAddSchedule();
+                    loadSchedules();
+                    loadStatus();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (e) {
+                alert('Network error');
+            }
+        }
+
+        async function deleteSchedule(id) {
+            if (!confirm('Remove this schedule?')) return;
+            
+            try {
+                const res = await fetch(`/api/schedule/${id}`, {method: 'DELETE'});
+                const data = await res.json();
+                
+                if (data.success) {
+                    loadSchedules();
+                    loadStatus();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (e) {
+                alert('Network error');
+            }
+        }
+
         function formatDate(isoString) {
             const date = new Date(isoString);
             return date.toLocaleString();
@@ -87,6 +281,7 @@
         }
 
         async function loadStatus() {
+            if (!authenticated) return;
             try {
                 const res = await fetch('/api/status');
                 const data = await res.json();
@@ -99,7 +294,36 @@
             }
         }
 
+        async function loadSchedules() {
+            if (!authenticated) return;
+            try {
+                const res = await fetch('/api/schedules');
+                const schedules = await res.json();
+                
+                const div = document.getElementById('schedulesList');
+                if (schedules.length === 0) {
+                    div.innerHTML = '<div class="loading">No schedules</div>';
+                    return;
+                }
+                
+                div.innerHTML = schedules.map(s => `
+                    <div class="schedule-item">
+                        <div>
+                            <strong>${formatDate(s.scheduled_time)}</strong><br>
+                            <span class="status-badge ${s.is_recurring ? 'status-recurring' : 'status-onetime'}">
+                                ${s.is_recurring ? '🔄 Daily' : '📅 One-time'}
+                            </span>
+                        </div>
+                        <button class="btn btn-small btn-danger" onclick="deleteSchedule(${s.id})">Remove</button>
+                    </div>
+                `).join('');
+            } catch (e) {
+                document.getElementById('schedulesList').innerHTML = '<div class="loading">Error loading schedules</div>';
+            }
+        }
+
         async function loadHistory() {
+            if (!authenticated) return;
             try {
                 const res = await fetch('/api/history');
                 const posts = await res.json();
@@ -125,6 +349,7 @@
         }
 
         async function triggerPost() {
+            if (!authenticated) return;
             const btn = document.getElementById('triggerBtn');
             const result = document.getElementById('triggerResult');
             
@@ -140,7 +365,7 @@
                     result.innerHTML = '<div style="color: green; font-weight: bold;">✓ Posted successfully!</div>';
                     setTimeout(() => {
                         loadStatus();
-                        loadHistory();
+                        if (currentTab === 'history') loadHistory();
                     }, 1000);
                 } else {
                     result.innerHTML = `<div style="color: red;">✗ Error: ${data.error}</div>`;
@@ -153,14 +378,13 @@
             btn.textContent = 'Post Now 🚀';
         }
 
-        // Load data on page load
-        loadStatus();
-        loadHistory();
-        
         // Refresh every 30 seconds
         setInterval(() => {
-            loadStatus();
-            loadHistory();
+            if (authenticated) {
+                loadStatus();
+                if (currentTab === 'schedules') loadSchedules();
+                if (currentTab === 'history') loadHistory();
+            }
         }, 30000);
     </script>
 </body>

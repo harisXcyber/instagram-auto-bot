@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Kung Fu Panda Bot</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .login-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-container h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .login-container p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            width: 100%;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .error {
+            color: #dc3545;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>🐼 Kung Fu Panda Bot</h1>
+        <p>Enter password to access dashboard</p>
+        
+        <form id="loginForm" onsubmit="login(event)">
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required autofocus>
+            </div>
+            <button type="submit" class="btn" id="loginBtn">Login</button>
+            <div id="error" class="error"></div>
+        </form>
+    </div>
+
+    <script>
+        async function login(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('loginBtn');
+            const error = document.getElementById('error');
+            const password = document.getElementById('password').value;
+            
+            btn.disabled = true;
+            btn.textContent = 'Logging in...';
+            error.textContent = '';
+            
+            try {
+                const res = await fetch('/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({password})
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    window.location.href = '/';
+                } else {
+                    error.textContent = 'Invalid password';
+                    btn.disabled = false;
+                    btn.textContent = 'Login';
+                }
+            } catch (e) {
+                error.textContent = 'Network error';
+                btn.disabled = false;
+                btn.textContent = 'Login';
+            }
+        }
+    </script>
+</body>
+</html>
