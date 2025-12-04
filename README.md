@@ -1,70 +1,96 @@
-# Instagram Auto-Posting Bot
+# PrecisionBot - AI-Powered Instagram Automation
 
-Automated Instagram bot with AI-generated captions, scheduling, and web dashboard.
+<div align="center">
+  <img src="docs/logo.png" alt="Precision Tech Insights" width="200"/>
+  
+  **From Code to Intelligence — We Deliver Precision**
+  
+  [![GitHub stars](https://img.shields.io/github/stars/harisXcyber/instagram-auto-bot?style=social)](https://github.com/harisXcyber/instagram-auto-bot)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+  [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+  
+  [🚀 Live Demo](https://harisxcyber.github.io/instagram-auto-bot/) | [📖 Documentation](https://harisxcyber.github.io/instagram-auto-bot/) | [💼 Company](https://precisiontechinsights.com)
+</div>
 
-## Features
+---
 
-- 🤖 Automated daily posts with AI-generated captions
-- 🎨 OpenAI Vision API for context-aware content
-- 📅 Flexible scheduling system (recurring & one-time posts)
-- 🌐 Web dashboard for monitoring and control
-- 🔒 Password-protected interface
-- 📊 Post history tracking
-- 🚀 One-click manual posting
+## 🎯 What is PrecisionBot?
 
-## Tech Stack
+PrecisionBot is an open-source Instagram automation platform built by **Precision Tech Insights**. It uses GPT-4 Vision AI to analyze images and generate contextually relevant captions, then automatically posts to Instagram on your schedule.
 
-- **Backend:** Flask + APScheduler
-- **Instagram:** instagrapi
-- **AI:** OpenAI GPT-4 Vision
-- **Database:** SQLite
-- **Deployment:** Fly.io (Docker)
+**Save 182 hours annually. Post smarter, not harder.**
 
-## Setup
+---
 
-### 1. Install Dependencies
+## ✨ Features
+
+- 🧠 **GPT-4 Vision AI** - Intelligent image analysis and caption generation
+- ⚡ **Smart Scheduling** - Daily recurring + one-time scheduled posts
+- 🎯 **Web Dashboard** - Beautiful interface for monitoring and control
+- 🔒 **Enterprise Security** - Password-protected with session persistence
+- 🌐 **Cloud-Ready** - Docker-based, deploy anywhere
+- 📊 **Analytics** - Track post history and performance
+- 🚀 **One-Click Deploy** - Ready for Fly.io, AWS, or any cloud platform
+
+---
+
+## 🏢 About Precision Tech Insights
+
+Founded in 2025, Precision Tech Insights transforms businesses through precision technology solutions. We specialize in:
+
+- 💻 **Web Development** - MERN, Django, Laravel, React, Next.js
+- 🔒 **Cybersecurity** - Penetration testing, security audits, ethical hacking
+- 📊 **Data Science** - Analytics, visualization, automation, dashboards
+- 🤖 **AI & Automation** - Chatbots, NLP, intelligent agents
+- 🎨 **Content Creation** - Branding, video content, social media assets
+
+**Our Mission:** From Code to Intelligence — We Deliver Precision
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.8+
+- Instagram account
+- OpenAI API key
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/harisXcyber/instagram-auto-bot.git
+cd instagram-auto-bot
+
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### 2. Configure Environment
-
-Copy `.env.example` to `.env` and fill in your credentials:
-
-```bash
+# Configure environment
 cp .env.example .env
-```
+# Edit .env with your credentials
 
-### 3. Add Images
+# Add your images
+# Place images in the images/ directory
 
-Place your images in the `images/` directory.
-
-### 4. Run Locally
-
-```bash
+# Run locally
 python app.py
 ```
 
-Visit `http://localhost:8080`
+Visit `http://localhost:8080` and enter your dashboard password.
 
-## Deployment (Fly.io)
+---
 
-### 1. Install Fly CLI
+## ☁️ Deploy to Fly.io (Free)
 
 ```bash
+# Install Fly CLI
 curl -L https://fly.io/install.sh | sh
-```
 
-### 2. Login
-
-```bash
+# Login
 flyctl auth login
-```
 
-### 3. Deploy
-
-```bash
+# Deploy
 flyctl launch
 flyctl secrets set INSTAGRAM_USERNAME=your_username
 flyctl secrets set INSTAGRAM_PASSWORD=your_password
@@ -73,20 +99,84 @@ flyctl secrets set DASHBOARD_PASSWORD=your_dashboard_password
 flyctl deploy
 ```
 
-## Dashboard Features
+---
 
-- **Next Post:** Shows countdown to next scheduled post
-- **Manual Trigger:** Post immediately with one click
-- **Schedules Tab:** View/add/remove scheduled posts
-- **History Tab:** See recent posts and their status
+## 💰 Pricing
 
-## Security
+### Open Source (FREE)
+- Full source code access
+- AI-generated captions
+- Flexible scheduling
+- Web dashboard
+- Self-hosted deployment
+- Community support
 
-- Password-protected dashboard
-- Session-based authentication
-- Instagram session persistence
-- Environment variables for sensitive data
+### PrecisionBot Pro (Coming Soon - $29/mo)
+- Multi-account management
+- Advanced AI agents
+- Engagement analytics
+- Content optimization
+- Priority support
+- Managed hosting
 
-## License
+### Enterprise (Custom Pricing)
+- Unlimited accounts
+- Custom AI training
+- White-label solution
+- Dedicated support
+- SLA guarantee
+- On-premise deployment
 
-MIT
+---
+
+## 🛠️ Tech Stack
+
+- **Backend:** Flask (Python)
+- **Scheduling:** APScheduler
+- **Instagram API:** instagrapi
+- **AI:** OpenAI GPT-4 Vision
+- **Database:** SQLite
+- **Deployment:** Docker + Fly.io
+
+---
+
+## 📖 Documentation
+
+Full documentation available at: [https://harisxcyber.github.io/instagram-auto-bot/](https://harisxcyber.github.io/instagram-auto-bot/)
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to submit a Pull Request.
+
+---
+
+## 📧 Contact
+
+**Precision Tech Insights**
+
+- 🌐 Website: [precisiontechinsights.com](https://precisiontechinsights.com)
+- 📧 Email: contact@precisiontechinsights.com
+- 📱 Phone: +92 348 1383350
+- 💼 LinkedIn: [Precision Tech Insights](https://www.linkedin.com/company/precision-tech-insights)
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details
+
+---
+
+## 🌟 Star Us!
+
+If PrecisionBot saves you time, please star the repo and share it with others!
+
+---
+
+<div align="center">
+  <strong>Built with ☕ and AI by Precision Tech Insights</strong>
+  
+  From Code to Intelligence — We Deliver Precision
+</div>
